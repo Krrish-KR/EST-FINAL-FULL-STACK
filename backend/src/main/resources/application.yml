@@ -1,0 +1,15 @@
+server:
+  port: 8080
+
+spring:
+  application:
+    name: exception-logging-demo
+
+app:
+  cors:
+    allowed-origins: http://localhost:5173
+  logs:
+    # Passphrase used to derive the AES-256 key (PBKDF2) for the encrypted logs endpoint.
+    # CHANGE THIS and load it from an environment variable / secret store in real deployments.
+    secret: ${LOG_ENCRYPTION_SECRET:demo-secret-change-me}
+    pbkdf2-iterations: 100000

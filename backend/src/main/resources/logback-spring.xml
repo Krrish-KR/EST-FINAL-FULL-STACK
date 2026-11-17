@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration>
+
+  <!-- 1. Structured JSON logs to the console -->
+  <appender name="JSON_CONSOLE" class="ch.qos.logback.core.ConsoleAppender">
+    <encoder class="net.logstash.logback.encoder.LogstashEncoder">
+      <customFields>{"app":"exception-logging-demo"}</customFields>
+    </encoder>
+  </appender>
+
+  <!-- 2. Structured JSON logs to a rolling file (logs/app.json) -->
+  <appender name="JSON_FILE" class="ch.qos.logback.core.rolling.RollingFileAppender">
+    <file>logs/app.json</file>
+    <rollingPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedRollingPolicy">
+      <fileNamePattern>logs/app.%d{yyyy-MM-dd}.%i.json</fileNamePattern>
+      <maxFileSize>10MB</maxFileSize>
+      <maxHistory>7</maxHistory>
+    </rollingPolicy>
+    <encoder class="net.logstash.logback.encoder.LogstashEncoder">
+      <customFields>{"app":"exception-logging-demo"}</customFields>
+    </encoder>
+  </appender>
+
+  <!-- 3. In-memory ring buffer that feeds the web logging pages -->
+  <appender name="MEMORY" class="com.example.exlog.logging.InMemoryLogAppender"/>
+
+  <root level="INFO">
+    <appender-ref ref="JSON_CONSOLE"/>
+    <appender-ref ref="JSON_FILE"/>
+    <appender-ref ref="MEMORY"/>
+  </root>
+
+  <logger name="com.example.exlog" level="DEBUG"/>
+</configuration>
